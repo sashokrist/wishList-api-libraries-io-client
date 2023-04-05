@@ -29,7 +29,8 @@ class LibraryService
             'form_params' => [
                 'name' => $data['name'],
                 'description' => $data['description'],
-                'url' => $data['url']
+                'url' => $data['url'],
+                'user_id' => 1
             ],
         ]);
 
