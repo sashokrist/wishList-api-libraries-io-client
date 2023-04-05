@@ -23,17 +23,13 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Description</th>
                                     <th scope="col">Libraries</th>
+                                    <th scope="col">Remove</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach ($wishlists as $item)
                                     <tr>
                                         <td>{{ $item->id }}
-                                            <form action="{{ route('wishlists-destroy', $item->id) }}" method="POST">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="submit" class="btn btn-danger btn-sm">X</button>
-                                            </form>
                                         </td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->description }}</td>
@@ -41,14 +37,16 @@
                                             <ul>
                                                 @foreach ($item->libraries as $library)
                                                     <li>{{ $library->name }}
-                                                        <form action="" method="POST">
-                                                            @method('DELETE')
-                                                            @csrf
-                                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                                        </form>
                                                     </li>
                                                 @endforeach
                                             </ul>
+                                        </td>
+                                        <td>
+                                            <form action="{{ route('wishlists-destroy', $item->id) }}" method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

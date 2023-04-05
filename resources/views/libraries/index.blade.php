@@ -23,21 +23,24 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Description</th>
                                     <th scope="col">URL</th>
+                                    <th scope="col">Remove</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach ($libraries as $item)
                                     <tr>
                                         <td>{{ $item->id }}
-                                            <form action="{{ route('destroy', $item->id) }}" method="POST">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="submit" class="btn btn-danger btn-sm">X</button>
-                                            </form>
                                         </td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->description }}</td>
                                         <td>{{ $item->url }}</td>
+                                        <td>
+                                            <form action="{{ route('destroy', $item->id) }}" method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
