@@ -31,9 +31,9 @@
                                 <div class="mb-6">
                                     <label class="block">
                                         <span>Library</span>
-                                        <select name="library_id" class="form-select">
+                                        <select name="library_id[]" class="form-select" multiple>
                                             @foreach($libraries as $library)
-                                                <option value="{{ $library->id }}">{{ $library->name }}</option>
+                                                <option value="{{ $library->id }}"f>{{ $library->name }}</option>
                                             @endforeach
                                         </select>
                                     </label>
