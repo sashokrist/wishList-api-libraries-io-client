@@ -36,7 +36,7 @@ Route::post('/api-login', [ LoginController::class, 'login'])->name('api-login')
 Route::get('/wishlists', [WishListsController::class, 'index'])->name('wishlists');
 Route::get('/wishlists/create', [WishListsController::class, 'create'])->name('wishlists/create');
 Route::post('/wishlists/store', [WishListsController::class, 'store'])->name('/wishlists/store');
-Route::delete('/wishlists/{wishList}',[WishListsController::class, 'destroy'])->name('destroy');
+Route::delete('/wishlists/{wishList}',[WishListsController::class, 'destroy'])->name('wishlists-destroy');
 
 Route::get('/libraries', [LibraryController::class, 'index'])->name('libraries');
 Route::get('/libraries/create', [LibraryController::class, 'create'])->name('libraries/create');

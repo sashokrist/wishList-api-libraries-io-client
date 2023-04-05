@@ -29,7 +29,7 @@
                                 @foreach ($wishlists as $item)
                                     <tr>
                                         <td>{{ $item->id }}
-                                            <form action="{{ route('destroy', $item->id) }}" method="POST">
+                                            <form action="{{ route('wishlists-destroy', $item->id) }}" method="POST">
                                                 @method('DELETE')
                                                 @csrf
                                                 <button type="submit" class="btn btn-danger btn-sm">X</button>
@@ -41,7 +41,7 @@
                                             <ul>
                                                 @foreach ($item->libraries as $library)
                                                     <li>{{ $library->name }}
-                                                        <form action="{{ route('destroy', $item->id) }}" method="POST">
+                                                        <form action="" method="POST">
                                                             @method('DELETE')
                                                             @csrf
                                                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
