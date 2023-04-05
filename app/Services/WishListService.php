@@ -17,7 +17,7 @@ class WishListService
         ]);
     }
 
-    public function getWishLists()
+    public function getAll()
     {
         $response = $this->client->get('wishlists');
         return json_decode($response->getBody()->getContents());
@@ -29,7 +29,7 @@ class WishListService
         return json_decode($response->getBody()->getContents());
     }
 
-    public function createWishList($data)
+    public function create($data)
     {
         $response = $this->client->post('wishlists', [
             'form_params' => $data,
@@ -38,7 +38,7 @@ class WishListService
         Session::flash('success', 'Wish List was created successfully.');
     }
 
-    public function deleteWishList($id)
+    public function delete($id)
     {
         $response = $this->client->delete('wishlists/' . $id);
 

@@ -2,26 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App\Services\LibraryService;
 
 class LibraryController extends Controller
 {
-    protected $client;
-    protected $base_uri = 'http://wishlist.test';
+    protected $libraryService;
 
-    public function __construct()
+    public function __construct(LibraryService $libraryService)
     {
-        $this->client = new Client([
-            'base_uri' => $this->base_uri,
-        ]);
+        $this->libraryService = $libraryService;
     }
 
     public function index()
     {
-        $response = $this->client->get('http://wishlist.test/api/libraries');
-        $libraries = json_decode($response->getBody()->getContents());
+        $libraries = $this->libraryService->all();
 
         return view('libraries.index', compact('libraries'));
     }
@@ -33,23 +29,25 @@ class LibraryController extends Controller
 
     public function store(Request $request)
     {
-        $response = $this->client->post('http://wishlist.test/api/libraries', [
-            'form_params' => [
-                'name' => $request->name,
-                'description' => $request->description,
-                'url' => $request->url
-            ],
-        ]);
+        $data = $request->only(['name', 'description', 'url']);
 
-        Session::flash('success', 'Library was created successfully.');
+        if ($this->libraryService->create($data)) {
+            Session::flash('success', 'Library was created successfully.');
+            return redirect()->route('libraries');
+        }
+
+        Session::flash('error', 'Unable to create library.');
         return redirect()->route('libraries');
     }
 
-    public function destroy($wishList)
+    public function destroy($id)
     {
-        $response = $this->client->delete('http://wishlist.test/api/libraries/' . $wishList);
+        if ($this->libraryService->delete($id)) {
+            Session::flash('success', 'Library was deleted successfully.');
+        } else {
+            Session::flash('error', 'Unable to delete library.');
+        }
 
-        Session::flash('success', 'Library was deleted successfully.');
         return redirect()->back();
     }
 }

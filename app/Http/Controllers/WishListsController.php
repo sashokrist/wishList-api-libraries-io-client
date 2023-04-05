@@ -2,58 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use GuzzleHttp\Client;
+use App\Services\WishListService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 class WishListsController extends Controller
 {
-    protected $client;
-    protected $base_uri = 'http://wishlist.test';
+    protected $wishListService;
 
-    public function __construct()
+    public function __construct(WishListService $wishListService)
     {
-        $this->client = new Client([
-            'base_uri' => $this->base_uri,
-        ]);
+        $this->wishListService = $wishListService;
     }
 
     public function index()
     {
-        $response = $this->client->get('http://wishlist.test/api/wishlists');
-        $wishlists = json_decode($response->getBody()->getContents());
-
+        $wishlists = $this->wishListService->getAll();
         return view('wishlists.index', compact('wishlists'));
     }
 
     public function create()
     {
-        $response = $this->client->get('http://wishlist.test/api/libraries');
-        $libraries = json_decode($response->getBody()->getContents());
-
+        $libraries = $this->wishListService->getLibraries();
         return view('wishlists.create', compact('libraries'));
     }
 
     public function store(Request $request)
     {
-        $response = $this->client->post('http://wishlist.test/api/wishlists', [
-            'form_params' => [
-                'user_id' => 1,
-                'name' => $request->name,
-                'description' => $request->description,
-                'library_id' => $request->library_id
-            ],
-        ]);
+        $data = [
+            'user_id' => 1,
+            'name' => $request->name,
+            'description' => $request->description,
+            'library_id' => $request->library_id
+        ];
+        $this->wishListService->create($data);
 
-        Session::flash('success', 'Wish List was created successfully.');
         return redirect()->route('wishlists');
     }
 
     public function destroy($wishList)
     {
-        $response = $this->client->delete('http://wishlist.test/api/wishlists/' . $wishList);
+        $this->wishListService->delete($wishList);
 
-        Session::flash('success', 'Wish List was deleted successfully.');
         return redirect()->back();
     }
 }
