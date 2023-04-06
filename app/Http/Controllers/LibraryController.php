@@ -13,6 +13,7 @@ class LibraryController extends Controller
 
     public function __construct(LibraryService $libraryService)
     {
+        $this->middleware('auth');
         $this->libraryService = $libraryService;
     }
 
@@ -40,12 +41,7 @@ class LibraryController extends Controller
         ];
         $this->libraryService->create($data);
 
-        if ($this->libraryService->create($data)) {
             Session::flash('success', 'Library was created successfully.');
-            return redirect()->route('libraries');
-        }
-
-        Session::flash('error', 'Unable to create library.');
         return redirect()->route('libraries');
     }
 

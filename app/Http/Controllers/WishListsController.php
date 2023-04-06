@@ -15,6 +15,7 @@ class WishListsController extends Controller
 
     public function __construct(WishListService $wishListService)
     {
+        $this->middleware('auth');
         $this->wishListService = $wishListService;
     }
 

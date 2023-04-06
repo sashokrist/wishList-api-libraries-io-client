@@ -27,12 +27,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-
-//Route::get('/wishlists', [WishlistController::class, 'index'])->name('wishlists');
-
-Route::post('/api-register', [ RegisterController::class, 'registerApi'])->name('api-register');
-Route::post('/api-login', [ LoginController::class, 'login'])->name('api-login');
-
 Route::get('/wishlists', [WishListsController::class, 'index'])->name('wishlists');
 Route::get('/wishlists/create', [WishListsController::class, 'create'])->name('wishlists/create');
 Route::post('/wishlists/store', [WishListsController::class, 'store'])->name('/wishlists/store');
@@ -41,9 +35,10 @@ Route::delete('/wishlists/{wishList}',[WishListsController::class, 'destroy'])->
 Route::get('/libraries', [LibraryController::class, 'index'])->name('libraries');
 Route::get('/libraries/create', [LibraryController::class, 'create'])->name('libraries/create');
 Route::post('/libraries/store', [LibraryController::class, 'store'])->name('/libraries/store');
+Route::delete('/libraries/{library}',[LibraryController::class, 'destroy'])->name('destroy');
 
 Route::post('userStore', [RegisterController::class, 'createUser'])->name('userStore');
 Route::post('deactivate', [WishListsController::class, 'deactivate'])->name('deactivate');
 //Route::post('/libraries/userLogin', [LibraryController::class, 'userLogin'])->name('libraries/userLogin');
 
-Route::delete('/libraries/{library}',[LibraryController::class, 'destroy'])->name('destroy');
+

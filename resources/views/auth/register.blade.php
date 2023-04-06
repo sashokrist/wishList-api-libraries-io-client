@@ -82,6 +82,6 @@
 <script>
     setTimeout(function () {
         $('.alert').fadeOut('slow');
-    }, 3000);
+    }, 9000);
 </script>
 @endsection
