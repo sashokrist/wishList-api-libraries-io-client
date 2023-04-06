@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
 class WishListService
@@ -19,8 +20,15 @@ class WishListService
 
     public function getAll()
     {
-        $response = $this->client->get('wishlists');
-        return json_decode($response->getBody()->getContents());
+//        $response = $this->client->get('wishlists');
+//        return json_decode($response->getBody()->getContents());
+        $cacheKey = 'libraries.all'; // A unique key for this cache entry
+        $cacheTime = 60 * 60; // Time to cache the response (in seconds)
+
+        return Cache::remember($cacheKey, $cacheTime, function () {
+            $response = $this->client->get('wishlists');
+            return json_decode($response->getBody()->getContents());
+        });
     }
 
     public function getLibraries()
