@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LibraryRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Services\LibraryService;
@@ -27,9 +28,17 @@ class LibraryController extends Controller
         return view('libraries.create');
     }
 
-    public function store(Request $request)
+    public function store(LibraryRequest $request)
     {
-        $data = $request->only(['name', 'description', 'url']);
+       // $data = $request->only(['name', 'description', 'url']);
+        $data = [
+            'user_id' => auth()->user()->id,
+            'name' => $request->name,
+            'description' => $request->description,
+            'url' => $request->url,
+            'library_id' => $request->library_id
+        ];
+        $this->libraryService->create($data);
 
         if ($this->libraryService->create($data)) {
             Session::flash('success', 'Library was created successfully.');

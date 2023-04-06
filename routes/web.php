@@ -41,4 +41,9 @@ Route::delete('/wishlists/{wishList}',[WishListsController::class, 'destroy'])->
 Route::get('/libraries', [LibraryController::class, 'index'])->name('libraries');
 Route::get('/libraries/create', [LibraryController::class, 'create'])->name('libraries/create');
 Route::post('/libraries/store', [LibraryController::class, 'store'])->name('/libraries/store');
+
+Route::post('userStore', [RegisterController::class, 'createUser'])->name('userStore');
+Route::post('deactivate', [WishListsController::class, 'deactivate'])->name('deactivate');
+//Route::post('/libraries/userLogin', [LibraryController::class, 'userLogin'])->name('libraries/userLogin');
+
 Route::delete('/libraries/{library}',[LibraryController::class, 'destroy'])->name('destroy');

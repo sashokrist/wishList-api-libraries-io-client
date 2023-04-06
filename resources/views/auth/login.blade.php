@@ -3,12 +3,17 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+        @if (Session::has('success'))
+            <div class="alert alert-success">
+                {{ Session::get('success') }}
+            </div>
+        @endif
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('api-login') }}">
+                    <form method="POST" action="{{ route('login') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -70,4 +75,9 @@
         </div>
     </div>
 </div>
+<script>
+    setTimeout(function () {
+        $('.alert').fadeOut('slow');
+    }, 3000);
+</script>
 @endsection

@@ -26,16 +26,11 @@ class LibraryService
     public function create($data)
     {
         $response = $this->client->post('http://wishlist.test/api/libraries', [
-            'form_params' => [
-                'name' => $data['name'],
-                'description' => $data['description'],
-                'url' => $data['url'],
-                'user_id' => 1
-            ],
+            'form_params' => $data,
         ]);
 
         Session::flash('success', 'Library was created successfully.');
-        return $response->getStatusCode() == 201;
+        return $response->getStatusCode() === 201;
     }
 
     public function delete($id)
@@ -43,6 +38,6 @@ class LibraryService
         $response = $this->client->delete('http://wishlist.test/api/libraries/' . $id);
 
         Session::flash('success', 'Library was deleted successfully.');
-        return $response->getStatusCode() == 204;
+        return $response->getStatusCode() === 204;
     }
 }

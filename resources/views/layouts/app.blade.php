@@ -41,10 +41,12 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
+                        <a class="nav-link" href="{{ route('wishlists') }}">{{ __('WishList') }}</a>
+                        <a class="nav-link" href="{{ route('libraries') }}">{{ __('Libraries') }}</a>
+                        <a class="nav-link" href="{{ route('home') }}">{{ __('Profile') }}</a>
                         <!-- Authentication Links -->
                         @guest
-                            <a class="nav-link" href="{{ route('wishlists') }}">{{ __('WishList') }}</a>
-                            <a class="nav-link" href="{{ route('libraries') }}">{{ __('Libraries') }}</a>
+
                             @if (Route::has('login'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>

@@ -46,6 +46,7 @@ class LoginController extends Controller
 
         // Check if the user's account is active
         $user = User::where($this->username(), $credentials[$this->username()])->first();
+        // dd($user);
         if (!$user || !$user->is_active) {
             session()->flash('error', 'Account is deactivated');
             return null;

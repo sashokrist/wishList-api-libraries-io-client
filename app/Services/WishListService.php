@@ -36,6 +36,7 @@ class WishListService
         ]);
 
         Session::flash('success', 'Wish List was created successfully.');
+        return $response->getStatusCode() === 201;
     }
 
     public function delete($id)
@@ -43,5 +44,6 @@ class WishListService
         $response = $this->client->delete('wishlists/' . $id);
 
         Session::flash('success', 'Wish List was deleted successfully.');
+        return $response->getStatusCode() === 204;
     }
 }
