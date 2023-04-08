@@ -34,7 +34,7 @@ class RegisterController extends Controller
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
-    protected $base_uri = 'http://wishlist.test';
+    protected $base_uri = 'http://wishlist.test/';
     protected $client;
 
     /**
@@ -65,24 +65,18 @@ class RegisterController extends Controller
         ]);
     }
 
-//    /**
-//     * Create a new user instance after a valid registration.
-//     *
-//     * @param  array  $data
-//     * @return \App\Models\User
-//     */
-//    protected function create(array $data)
-//    {
-//        return User::create([
-//            'name' => $data['name'],
-//            'email' => $data['email'],
-//            'password' => Hash::make($data['password']),
-//        ]);
-//    }
 
     public function createUser(Request $request)
     {
-        $response = $this->client->post('http://wishlist.test/api/storeUser', [
+        $result = $this->client->post('oauth/token');
+        $access_token = json_decode((string) $result->getBody(), true)['access_token'];
+
+        $response = $this->client->post('api/storeUser', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'Authorization' => "Bearer $access_token",
+            ],
             'form_params' => [
                 'name' => $request['name'],
                 'email' => $request['email'],
@@ -105,10 +99,16 @@ class RegisterController extends Controller
 
     public function deactivateAccount()
     {
-        $user = Auth::user();
-        $user->is_active = false;
-        $user->save();
-        Auth::logout();
+        $result = $this->client->post('oauth/token');
+        $access_token = json_decode((string) $result->getBody(), true)['access_token'];
+
+        $response = $this->client->get('api/deactivateAccount', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'Authorization' => "Bearer $access_token",
+            ]
+        ]);
 
         return redirect()->route('register')->with('success', 'Your account has been deactivated.');
     }

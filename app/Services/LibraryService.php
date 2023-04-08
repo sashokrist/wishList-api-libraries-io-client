@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Session;
 class LibraryService
 {
     protected $client;
-    protected $base_uri = 'http://wishlist.test/api';
+    protected $base_uri = 'http://wishlist.test/';
 
     public function __construct()
     {
@@ -20,9 +20,9 @@ class LibraryService
 
     public function all()
     {
-        $result = $this->client->post('http://127.0.0.1:8000/oauth/token');
+        $result = $this->client->post('oauth/token');
         $access_token = json_decode((string) $result->getBody(), true)['access_token'];
-        $response = $this->client->get('libraries', [
+        $response = $this->client->get('api/libraries', [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
@@ -34,9 +34,9 @@ class LibraryService
 
     public function create($data)
     {
-        $result = $this->client->post('http://127.0.0.1:8000/oauth/token');
+        $result = $this->client->post('oauth/token');
         $access_token = json_decode((string) $result->getBody(), true)['access_token'];
-        $response = $this->client->post('libraries', [
+        $response = $this->client->post('api/libraries', [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
@@ -50,16 +50,15 @@ class LibraryService
 
     public function delete($id)
     {
-        $result = $this->client->post('http://127.0.0.1:8000/oauth/token');
+        $result = $this->client->post('oauth/token');
         $access_token = json_decode((string) $result->getBody(), true)['access_token'];
-        $response = $this->client->delete('libraries' . $id, [
+        $response = $this->client->delete('api/libraries' . $id, [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
                 'Authorization' => "Bearer $access_token",
             ]
         ]);
-
         Session::flash('success', 'Wish List was deleted successfully.');
         return $response->getStatusCode() === 204;
     }

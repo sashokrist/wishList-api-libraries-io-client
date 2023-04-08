@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Session;
 class WishListService
 {
     protected $client;
-    protected $base_uri = 'http://wishlist.test/api/';
+    protected $base_uri = 'http://wishlist.test/';
 
     public function __construct()
     {
@@ -20,9 +20,9 @@ class WishListService
 
     public function getAll()
     {
-        $result = $this->client->post('http://127.0.0.1:8000/oauth/token');
+        $result = $this->client->post('oauth/token');
         $access_token = json_decode((string) $result->getBody(), true)['access_token'];
-        $response = $this->client->get('wishlists', [
+        $response = $this->client->get('api/wishlists', [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
@@ -34,9 +34,9 @@ class WishListService
 
     public function getLibraries()
     {
-        $result = $this->client->post('http://127.0.0.1:8000/oauth/token');
+        $result = $this->client->post('oauth/token');
         $access_token = json_decode((string) $result->getBody(), true)['access_token'];
-        $response = $this->client->get('libraries', [
+        $response = $this->client->get('api/libraries', [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
@@ -48,9 +48,9 @@ class WishListService
 
     public function create($data)
     {
-        $result = $this->client->post('http://127.0.0.1:8000/oauth/token');
+        $result = $this->client->post('oauth/token');
         $access_token = json_decode((string) $result->getBody(), true)['access_token'];
-        $response = $this->client->post('wishlists', [
+        $response = $this->client->post('api/wishlists', [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
@@ -64,9 +64,9 @@ class WishListService
 
     public function delete($id)
     {
-        $result = $this->client->post('http://127.0.0.1:8000/oauth/token');
+        $result = $this->client->post('oauth/token');
         $access_token = json_decode((string) $result->getBody(), true)['access_token'];
-        $response = $this->client->delete('wishlists' . $id, [
+        $response = $this->client->delete('api/wishlists' . $id, [
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
