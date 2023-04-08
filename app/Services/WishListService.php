@@ -20,36 +20,59 @@ class WishListService
 
     public function getAll()
     {
-//        $response = $this->client->get('wishlists');
-//        return json_decode($response->getBody()->getContents());
-        $cacheKey = 'libraries.all'; // A unique key for this cache entry
-        $cacheTime = 60 * 60; // Time to cache the response (in seconds)
-
-        return Cache::remember($cacheKey, $cacheTime, function () {
-            $response = $this->client->get('wishlists');
-            return json_decode($response->getBody()->getContents());
-        });
+        $result = $this->client->post('http://127.0.0.1:8000/oauth/token');
+        $access_token = json_decode((string) $result->getBody(), true)['access_token'];
+        $response = $this->client->get('wishlists', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'Authorization' => "Bearer $access_token",
+            ]
+        ]);
+        return json_decode($response->getBody()->getContents());
     }
 
     public function getLibraries()
     {
-        $response = $this->client->get('libraries');
+        $result = $this->client->post('http://127.0.0.1:8000/oauth/token');
+        $access_token = json_decode((string) $result->getBody(), true)['access_token'];
+        $response = $this->client->get('libraries', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'Authorization' => "Bearer $access_token",
+            ]
+        ]);
         return json_decode($response->getBody()->getContents());
     }
 
     public function create($data)
     {
+        $result = $this->client->post('http://127.0.0.1:8000/oauth/token');
+        $access_token = json_decode((string) $result->getBody(), true)['access_token'];
         $response = $this->client->post('wishlists', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'Authorization' => "Bearer $access_token",
+            ],
             'form_params' => $data,
         ]);
-
         Session::flash('success', 'Wish List was created successfully.');
         return $response->getStatusCode() === 201;
     }
 
     public function delete($id)
     {
-        $response = $this->client->delete('wishlists/' . $id);
+        $result = $this->client->post('http://127.0.0.1:8000/oauth/token');
+        $access_token = json_decode((string) $result->getBody(), true)['access_token'];
+        $response = $this->client->delete('wishlists' . $id, [
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'Authorization' => "Bearer $access_token",
+            ]
+        ]);
 
         Session::flash('success', 'Wish List was deleted successfully.');
         return $response->getStatusCode() === 204;
