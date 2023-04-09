@@ -68,14 +68,11 @@ class RegisterController extends Controller
 
     public function createUser(Request $request)
     {
-        $result = $this->client->post('oauth/token');
-        $access_token = json_decode((string) $result->getBody(), true)['access_token'];
+
 
         $response = $this->client->post('api/storeUser', [
             'headers' => [
-                'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
-                'Authorization' => "Bearer $access_token",
             ],
             'form_params' => [
                 'name' => $request['name'],
@@ -84,15 +81,6 @@ class RegisterController extends Controller
                 'password_confirmation' => $request['password_confirmation']
             ],
         ]);
-
-        $data = $request->only(['name', 'email', 'password', 'password_confirmation']);
-        User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'password_confirmation' => $request['password_confirmation']
-        ]);
-
         Session::flash('success', 'User was created successfully.');
         return redirect()->route('login');
     }
