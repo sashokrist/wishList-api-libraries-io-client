@@ -7,6 +7,7 @@ use App\Services\LibraryService;
 use App\Services\WishListService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 
 class WishListsController extends Controller
@@ -21,7 +22,14 @@ class WishListsController extends Controller
 
     public function index()
     {
-        $wishlists = $this->wishListService->getAll();
+        if (Cache::has('wishlist')) {
+            // data is cached, retrieve it from cache
+            $wishlists = Cache::get('wishlist');
+        } else {
+            // data is not cached, fetch it from form WishlistService
+            $wishlists = $this->wishListService->getAll();
+        }
+
         return view('wishlists.index', compact('wishlists'));
     }
 
